@@ -1,0 +1,18 @@
+# Copy to <data_dir>/rules/our-rules.yaml (or ASSAY_CUSTOM_RULES_DIR). Each rule shows up in reports, SARIF and the UI.
+- id: ORG-001
+  title: Internal API called without the corporate gateway
+  dimension: security            # security|scalability|performance|reliability|observability|maintainability
+  severity: high                 # critical|high|medium|low|info
+  languages: [python, typescript, javascript]
+  pattern: 'https?://[\w.-]+\.internal\.example\.com'
+  message: Internal services must be reached through the API gateway (GATEWAY_URL).
+  remediation: Read the gateway base URL from configuration and call the service through it.
+
+- id: ORG-002
+  title: Production database host hard-coded
+  dimension: maintainability
+  severity: medium
+  pattern: 'prd-db\d+\.corp'
+  message: Production hosts must come from configuration.
+  remediation: Use the DATABASE_URL injected by the platform.
+  in_tool_only: false

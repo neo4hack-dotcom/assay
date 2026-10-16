@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Assay command line on Linux/macOS, e.g.:  ./assay scan ~/repos/orders-mcp --out reports
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+[ -x "$ROOT/.venv/bin/python" ] || { echo "Run ./run.sh once first to install Assay."; exit 1; }
+PYTHONPATH="$ROOT/backend" exec "$ROOT/.venv/bin/python" -m app.cli "$@"

@@ -1,0 +1,10 @@
+# Gate a merge request on MCP production readiness (Assay installed on the runner image).
+# The SARIF file can be imported into DefectDojo, SonarQube, Azure DevOps or GitHub code scanning.
+mcp-readiness:
+  stage: test
+  script:
+    - assay scan . --no-llm --formats sarif,pdf,md --out assay-report --fail-under 65
+  artifacts:
+    when: always
+    expose_as: "MCP readiness report"
+    paths: [assay-report/]

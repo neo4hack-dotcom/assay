@@ -1,0 +1,13 @@
+name: mcp-readiness
+on: [pull_request]
+jobs:
+  assay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - run: git clone --depth 1 https://your.git/assay.git /opt/assay && pip install -r /opt/assay/requirements.txt
+      - run: PYTHONPATH=/opt/assay/backend python -m app.cli scan . --no-llm --formats sarif,md --out assay-report --fail-under 65
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with: { sarif_file: assay-report }

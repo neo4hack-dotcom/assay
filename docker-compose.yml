@@ -1,0 +1,18 @@
+# docker compose up -d   →  http://<server>:3101  (set ASSAY_AUTH_TOKEN in .env first)
+services:
+  assay:
+    build: .
+    image: assay:1.0.0
+    ports: ["3101:3101"]
+    env_file: [backend/.env]
+    environment:
+      ASSAY_ALLOWED_ROOTS: /repos
+    volumes:
+      - assay-data:/data
+      - ${REPOS_DIR:-./repos}:/repos:ro      # folders that "Local path" audits may read
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+volumes:
+  assay-data:
